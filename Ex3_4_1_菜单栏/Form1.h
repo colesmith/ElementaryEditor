@@ -34,7 +34,9 @@ namespace Ex3_4_1_菜单栏 {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::MenuStrip^  menuStrip1;
+	private: System::Windows::Forms::MenuStrip^  menuPanel;
+	protected: 
+
 	protected: 
 	private: System::Windows::Forms::ToolStripMenuItem^  file;
 	private: System::Windows::Forms::ToolStripMenuItem^  fileNew;
@@ -68,6 +70,10 @@ namespace Ex3_4_1_菜单栏 {
 	private: System::Windows::Forms::ToolStripMenuItem^  关于记事本AToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  pageSetting;
 	private: System::Windows::Forms::ToolStripMenuItem^  printer;
+	private: System::Windows::Forms::StatusStrip^  statusPanel;
+	private: System::Windows::Forms::ToolStripStatusLabel^  cursorCoordinate;
+	private: System::Windows::Forms::ToolStripStatusLabel^  mouseCoordinate;
+	private: System::Windows::Forms::ToolStripStatusLabel^  errorLog;
 
 
 	private:
@@ -83,17 +89,16 @@ namespace Ex3_4_1_菜单栏 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->menuPanel = (gcnew System::Windows::Forms::MenuStrip());
 			this->file = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->fileNew = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->fileOpen = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->fileSave = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->fileSaveAs = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->pageSetting = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->printer = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->exit = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->编辑ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->格式OToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->查看VToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->about = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->cancel = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textCut = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textCopy = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -105,25 +110,31 @@ namespace Ex3_4_1_菜单栏 {
 			this->textGoTo = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textSelectAll = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textDateTime = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->格式OToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textAutoIndent = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textFont = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->查看VToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->statusLine = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->about = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->getHelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->关于记事本AToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->pageSetting = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->printer = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->menuStrip1->SuspendLayout();
+			this->statusPanel = (gcnew System::Windows::Forms::StatusStrip());
+			this->cursorCoordinate = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->mouseCoordinate = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->errorLog = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->menuPanel->SuspendLayout();
+			this->statusPanel->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// menuStrip1
+			// menuPanel
 			// 
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->file, this->编辑ToolStripMenuItem, 
+			this->menuPanel->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->file, this->编辑ToolStripMenuItem, 
 				this->格式OToolStripMenuItem, this->查看VToolStripMenuItem, this->about});
-			this->menuStrip1->Location = System::Drawing::Point(0, 0);
-			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(732, 24);
-			this->menuStrip1->TabIndex = 0;
-			this->menuStrip1->Text = L"menuStrip1";
+			this->menuPanel->Location = System::Drawing::Point(0, 0);
+			this->menuPanel->Name = L"menuPanel";
+			this->menuPanel->Size = System::Drawing::Size(732, 24);
+			this->menuPanel->TabIndex = 0;
+			this->menuPanel->Text = L"菜单栏";
 			// 
 			// file
 			// 
@@ -166,6 +177,19 @@ namespace Ex3_4_1_菜单栏 {
 			this->fileSaveAs->Text = L"另存为(A)";
 			this->fileSaveAs->Click += gcnew System::EventHandler(this, &Form1::fileSaveAs_Click);
 			// 
+			// pageSetting
+			// 
+			this->pageSetting->Name = L"pageSetting";
+			this->pageSetting->Size = System::Drawing::Size(168, 22);
+			this->pageSetting->Text = L"页面设置(U)";
+			// 
+			// printer
+			// 
+			this->printer->Name = L"printer";
+			this->printer->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::P));
+			this->printer->Size = System::Drawing::Size(168, 22);
+			this->printer->Text = L"打印(P)";
+			// 
 			// exit
 			// 
 			this->exit->Name = L"exit";
@@ -182,28 +206,6 @@ namespace Ex3_4_1_菜单栏 {
 			this->编辑ToolStripMenuItem->Size = System::Drawing::Size(58, 20);
 			this->编辑ToolStripMenuItem->Text = L"编辑(E)";
 			this->编辑ToolStripMenuItem->Click += gcnew System::EventHandler(this, &Form1::编辑ToolStripMenuItem_Click);
-			// 
-			// 格式OToolStripMenuItem
-			// 
-			this->格式OToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->textAutoIndent, 
-				this->textFont});
-			this->格式OToolStripMenuItem->Name = L"格式OToolStripMenuItem";
-			this->格式OToolStripMenuItem->Size = System::Drawing::Size(61, 20);
-			this->格式OToolStripMenuItem->Text = L"格式(O)";
-			// 
-			// 查看VToolStripMenuItem
-			// 
-			this->查看VToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) {this->statusLine});
-			this->查看VToolStripMenuItem->Name = L"查看VToolStripMenuItem";
-			this->查看VToolStripMenuItem->Size = System::Drawing::Size(59, 20);
-			this->查看VToolStripMenuItem->Text = L"查看(V)";
-			// 
-			// about
-			// 
-			this->about->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->getHelp, this->关于记事本AToolStripMenuItem});
-			this->about->Name = L"about";
-			this->about->Size = System::Drawing::Size(60, 20);
-			this->about->Text = L"帮助(H)";
 			// 
 			// cancel
 			// 
@@ -282,62 +284,102 @@ namespace Ex3_4_1_菜单栏 {
 			this->textDateTime->Size = System::Drawing::Size(172, 22);
 			this->textDateTime->Text = L"时间/日期(D)";
 			// 
+			// 格式OToolStripMenuItem
+			// 
+			this->格式OToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->textAutoIndent, 
+				this->textFont});
+			this->格式OToolStripMenuItem->Name = L"格式OToolStripMenuItem";
+			this->格式OToolStripMenuItem->Size = System::Drawing::Size(61, 20);
+			this->格式OToolStripMenuItem->Text = L"格式(O)";
+			// 
 			// textAutoIndent
 			// 
 			this->textAutoIndent->Name = L"textAutoIndent";
-			this->textAutoIndent->Size = System::Drawing::Size(152, 22);
+			this->textAutoIndent->Size = System::Drawing::Size(142, 22);
 			this->textAutoIndent->Text = L"自行换行(W)";
 			// 
 			// textFont
 			// 
 			this->textFont->Name = L"textFont";
-			this->textFont->Size = System::Drawing::Size(152, 22);
+			this->textFont->Size = System::Drawing::Size(142, 22);
 			this->textFont->Text = L"字体(F)";
+			// 
+			// 查看VToolStripMenuItem
+			// 
+			this->查看VToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) {this->statusLine});
+			this->查看VToolStripMenuItem->Name = L"查看VToolStripMenuItem";
+			this->查看VToolStripMenuItem->Size = System::Drawing::Size(59, 20);
+			this->查看VToolStripMenuItem->Text = L"查看(V)";
 			// 
 			// statusLine
 			// 
 			this->statusLine->Name = L"statusLine";
-			this->statusLine->Size = System::Drawing::Size(152, 22);
+			this->statusLine->Size = System::Drawing::Size(125, 22);
 			this->statusLine->Text = L"状态栏(S)";
+			// 
+			// about
+			// 
+			this->about->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->getHelp, this->关于记事本AToolStripMenuItem});
+			this->about->Name = L"about";
+			this->about->Size = System::Drawing::Size(60, 20);
+			this->about->Text = L"帮助(H)";
 			// 
 			// getHelp
 			// 
 			this->getHelp->Name = L"getHelp";
-			this->getHelp->Size = System::Drawing::Size(152, 22);
+			this->getHelp->Size = System::Drawing::Size(150, 22);
 			this->getHelp->Text = L"查看帮助(H)";
 			this->getHelp->Click += gcnew System::EventHandler(this, &Form1::查看帮助ToolStripMenuItem_Click);
 			// 
 			// 关于记事本AToolStripMenuItem
 			// 
 			this->关于记事本AToolStripMenuItem->Name = L"关于记事本AToolStripMenuItem";
-			this->关于记事本AToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+			this->关于记事本AToolStripMenuItem->Size = System::Drawing::Size(150, 22);
 			this->关于记事本AToolStripMenuItem->Text = L"关于记事本(A)";
 			// 
-			// pageSetting
+			// statusPanel
 			// 
-			this->pageSetting->Name = L"pageSetting";
-			this->pageSetting->Size = System::Drawing::Size(168, 22);
-			this->pageSetting->Text = L"页面设置(U)";
+			this->statusPanel->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->cursorCoordinate, 
+				this->mouseCoordinate, this->errorLog});
+			this->statusPanel->Location = System::Drawing::Point(0, 415);
+			this->statusPanel->Name = L"statusPanel";
+			this->statusPanel->Size = System::Drawing::Size(732, 22);
+			this->statusPanel->TabIndex = 1;
+			this->statusPanel->Text = L"状态栏";
 			// 
-			// printer
+			// cursorCoordinate
 			// 
-			this->printer->Name = L"printer";
-			this->printer->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::P));
-			this->printer->Size = System::Drawing::Size(168, 22);
-			this->printer->Text = L"打印(P)";
+			this->cursorCoordinate->Name = L"cursorCoordinate";
+			this->cursorCoordinate->Size = System::Drawing::Size(81, 17);
+			this->cursorCoordinate->Text = L"Line: 0 Col: 0";
+			// 
+			// mouseCoordinate
+			// 
+			this->mouseCoordinate->Name = L"mouseCoordinate";
+			this->mouseCoordinate->Size = System::Drawing::Size(46, 17);
+			this->mouseCoordinate->Text = L"X:0 Y:0";
+			// 
+			// errorLog
+			// 
+			this->errorLog->Name = L"errorLog";
+			this->errorLog->Size = System::Drawing::Size(53, 17);
+			this->errorLog->Text = L"Error: ...";
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(732, 437);
-			this->Controls->Add(this->menuStrip1);
-			this->MainMenuStrip = this->menuStrip1;
+			this->Controls->Add(this->statusPanel);
+			this->Controls->Add(this->menuPanel);
+			this->MainMenuStrip = this->menuPanel;
 			this->Name = L"Form1";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Elementary Editor";
-			this->menuStrip1->ResumeLayout(false);
-			this->menuStrip1->PerformLayout();
+			this->menuPanel->ResumeLayout(false);
+			this->menuPanel->PerformLayout();
+			this->statusPanel->ResumeLayout(false);
+			this->statusPanel->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

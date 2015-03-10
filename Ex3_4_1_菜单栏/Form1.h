@@ -1,5 +1,7 @@
 #pragma once
 
+#include "textArea.h" // 包含子窗体的头文件
+
 namespace Ex3_4_1_菜单栏 {
 
 	using namespace System;
@@ -74,6 +76,7 @@ namespace Ex3_4_1_菜单栏 {
 	private: System::Windows::Forms::ToolStripStatusLabel^  cursorCoordinate;
 	private: System::Windows::Forms::ToolStripStatusLabel^  mouseCoordinate;
 	private: System::Windows::Forms::ToolStripStatusLabel^  errorLog;
+	private: System::Windows::Forms::ToolStripMenuItem^  窗体ToolStripMenuItem;
 
 
 	private:
@@ -122,15 +125,17 @@ namespace Ex3_4_1_菜单栏 {
 			this->cursorCoordinate = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->mouseCoordinate = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->errorLog = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->窗体ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuPanel->SuspendLayout();
 			this->statusPanel->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// menuPanel
 			// 
-			this->menuPanel->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->file, this->编辑ToolStripMenuItem, 
-				this->格式OToolStripMenuItem, this->查看VToolStripMenuItem, this->about});
+			this->menuPanel->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(6) {this->file, this->编辑ToolStripMenuItem, 
+				this->格式OToolStripMenuItem, this->查看VToolStripMenuItem, this->about, this->窗体ToolStripMenuItem});
 			this->menuPanel->Location = System::Drawing::Point(0, 0);
+			this->menuPanel->MdiWindowListItem = this->窗体ToolStripMenuItem;
 			this->menuPanel->Name = L"menuPanel";
 			this->menuPanel->Size = System::Drawing::Size(732, 24);
 			this->menuPanel->TabIndex = 0;
@@ -295,13 +300,13 @@ namespace Ex3_4_1_菜单栏 {
 			// textAutoIndent
 			// 
 			this->textAutoIndent->Name = L"textAutoIndent";
-			this->textAutoIndent->Size = System::Drawing::Size(142, 22);
+			this->textAutoIndent->Size = System::Drawing::Size(152, 22);
 			this->textAutoIndent->Text = L"自行换行(W)";
 			// 
 			// textFont
 			// 
 			this->textFont->Name = L"textFont";
-			this->textFont->Size = System::Drawing::Size(142, 22);
+			this->textFont->Size = System::Drawing::Size(152, 22);
 			this->textFont->Text = L"字体(F)";
 			// 
 			// 查看VToolStripMenuItem
@@ -327,14 +332,14 @@ namespace Ex3_4_1_菜单栏 {
 			// getHelp
 			// 
 			this->getHelp->Name = L"getHelp";
-			this->getHelp->Size = System::Drawing::Size(150, 22);
+			this->getHelp->Size = System::Drawing::Size(152, 22);
 			this->getHelp->Text = L"查看帮助(H)";
 			this->getHelp->Click += gcnew System::EventHandler(this, &Form1::查看帮助ToolStripMenuItem_Click);
 			// 
 			// 关于记事本AToolStripMenuItem
 			// 
 			this->关于记事本AToolStripMenuItem->Name = L"关于记事本AToolStripMenuItem";
-			this->关于记事本AToolStripMenuItem->Size = System::Drawing::Size(150, 22);
+			this->关于记事本AToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->关于记事本AToolStripMenuItem->Text = L"关于记事本(A)";
 			// 
 			// statusPanel
@@ -365,6 +370,12 @@ namespace Ex3_4_1_菜单栏 {
 			this->errorLog->Size = System::Drawing::Size(53, 17);
 			this->errorLog->Text = L"Error: ...";
 			// 
+			// 窗体ToolStripMenuItem
+			// 
+			this->窗体ToolStripMenuItem->Name = L"窗体ToolStripMenuItem";
+			this->窗体ToolStripMenuItem->Size = System::Drawing::Size(43, 20);
+			this->窗体ToolStripMenuItem->Text = L"窗体";
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
@@ -372,6 +383,7 @@ namespace Ex3_4_1_菜单栏 {
 			this->ClientSize = System::Drawing::Size(732, 437);
 			this->Controls->Add(this->statusPanel);
 			this->Controls->Add(this->menuPanel);
+			this->IsMdiContainer = true;
 			this->MainMenuStrip = this->menuPanel;
 			this->Name = L"Form1";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -386,7 +398,9 @@ namespace Ex3_4_1_菜单栏 {
 		}
 #pragma endregion
 	private: System::Void fileNew_Click(System::Object^  sender, System::EventArgs^  e) {
-				 MessageBox::Show(L"新建文件");
+				 textArea^ textAreaObj = gcnew textArea(); // 创建子窗体对象
+				 textAreaObj->MdiParent = this; // 设置子窗体的父窗体
+				 textAreaObj->Show(); // 显示子窗体
 			 }
 	private: System::Void fileOpen_Click(System::Object^  sender, System::EventArgs^  e) {
 				 MessageBox::Show(L"打开文件");

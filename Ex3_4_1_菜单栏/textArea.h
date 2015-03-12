@@ -72,9 +72,12 @@ namespace Ex3_4_1_²Ëµ¥À¸ {
 			this->Controls->Add(this->textAreaPanel);
 			this->Name = L"textArea";
 			this->Text = L"textArea";
+			this->Load += gcnew System::EventHandler(this, &textArea::textArea_Load);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
+	private: System::Void textArea_Load(System::Object^  sender, System::EventArgs^  e) {
+			 }
 	};
 }

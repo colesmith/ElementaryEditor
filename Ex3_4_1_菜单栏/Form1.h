@@ -77,6 +77,7 @@ namespace Ex3_4_1_菜单栏 {
 	private: System::Windows::Forms::ToolStripStatusLabel^  mouseCoordinate;
 	private: System::Windows::Forms::ToolStripStatusLabel^  errorLog;
 	private: System::Windows::Forms::ToolStripMenuItem^  窗体ToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  openFolderOption;
 
 
 	private:
@@ -92,6 +93,7 @@ namespace Ex3_4_1_菜单栏 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->menuPanel = (gcnew System::Windows::Forms::MenuStrip());
 			this->file = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->fileNew = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -121,11 +123,12 @@ namespace Ex3_4_1_菜单栏 {
 			this->about = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->getHelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->关于记事本AToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->窗体ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->statusPanel = (gcnew System::Windows::Forms::StatusStrip());
 			this->cursorCoordinate = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->mouseCoordinate = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->errorLog = (gcnew System::Windows::Forms::ToolStripStatusLabel());
-			this->窗体ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->openFolderOption = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuPanel->SuspendLayout();
 			this->statusPanel->SuspendLayout();
 			this->SuspendLayout();
@@ -143,8 +146,8 @@ namespace Ex3_4_1_菜单栏 {
 			// 
 			// file
 			// 
-			this->file->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(7) {this->fileNew, this->fileOpen, 
-				this->fileSave, this->fileSaveAs, this->pageSetting, this->printer, this->exit});
+			this->file->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(8) {this->fileNew, this->fileOpen, 
+				this->openFolderOption, this->fileSave, this->fileSaveAs, this->pageSetting, this->printer, this->exit});
 			this->file->Name = L"file";
 			this->file->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Alt | System::Windows::Forms::Keys::F));
 			this->file->Size = System::Drawing::Size(57, 20);
@@ -300,13 +303,13 @@ namespace Ex3_4_1_菜单栏 {
 			// textAutoIndent
 			// 
 			this->textAutoIndent->Name = L"textAutoIndent";
-			this->textAutoIndent->Size = System::Drawing::Size(152, 22);
+			this->textAutoIndent->Size = System::Drawing::Size(142, 22);
 			this->textAutoIndent->Text = L"自行换行(W)";
 			// 
 			// textFont
 			// 
 			this->textFont->Name = L"textFont";
-			this->textFont->Size = System::Drawing::Size(152, 22);
+			this->textFont->Size = System::Drawing::Size(142, 22);
 			this->textFont->Text = L"字体(F)";
 			// 
 			// 查看VToolStripMenuItem
@@ -318,9 +321,13 @@ namespace Ex3_4_1_菜单栏 {
 			// 
 			// statusLine
 			// 
+			this->statusLine->Checked = true;
+			this->statusLine->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->statusLine->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"statusLine.Image")));
 			this->statusLine->Name = L"statusLine";
-			this->statusLine->Size = System::Drawing::Size(125, 22);
+			this->statusLine->Size = System::Drawing::Size(152, 22);
 			this->statusLine->Text = L"状态栏(S)";
+			this->statusLine->Click += gcnew System::EventHandler(this, &Form1::statusLine_Click);
 			// 
 			// about
 			// 
@@ -332,15 +339,21 @@ namespace Ex3_4_1_菜单栏 {
 			// getHelp
 			// 
 			this->getHelp->Name = L"getHelp";
-			this->getHelp->Size = System::Drawing::Size(152, 22);
+			this->getHelp->Size = System::Drawing::Size(150, 22);
 			this->getHelp->Text = L"查看帮助(H)";
 			this->getHelp->Click += gcnew System::EventHandler(this, &Form1::查看帮助ToolStripMenuItem_Click);
 			// 
 			// 关于记事本AToolStripMenuItem
 			// 
 			this->关于记事本AToolStripMenuItem->Name = L"关于记事本AToolStripMenuItem";
-			this->关于记事本AToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+			this->关于记事本AToolStripMenuItem->Size = System::Drawing::Size(150, 22);
 			this->关于记事本AToolStripMenuItem->Text = L"关于记事本(A)";
+			// 
+			// 窗体ToolStripMenuItem
+			// 
+			this->窗体ToolStripMenuItem->Name = L"窗体ToolStripMenuItem";
+			this->窗体ToolStripMenuItem->Size = System::Drawing::Size(43, 20);
+			this->窗体ToolStripMenuItem->Text = L"窗体";
 			// 
 			// statusPanel
 			// 
@@ -370,11 +383,12 @@ namespace Ex3_4_1_菜单栏 {
 			this->errorLog->Size = System::Drawing::Size(53, 17);
 			this->errorLog->Text = L"Error: ...";
 			// 
-			// 窗体ToolStripMenuItem
+			// openFolderOption
 			// 
-			this->窗体ToolStripMenuItem->Name = L"窗体ToolStripMenuItem";
-			this->窗体ToolStripMenuItem->Size = System::Drawing::Size(43, 20);
-			this->窗体ToolStripMenuItem->Text = L"窗体";
+			this->openFolderOption->Name = L"openFolderOption";
+			this->openFolderOption->Size = System::Drawing::Size(168, 22);
+			this->openFolderOption->Text = L"打开文件夹";
+			this->openFolderOption->Click += gcnew System::EventHandler(this, &Form1::openFolderOption_Click);
 			// 
 			// Form1
 			// 
@@ -403,17 +417,58 @@ namespace Ex3_4_1_菜单栏 {
 				 textAreaObj->Show(); // 显示子窗体
 			 }
 	private: System::Void fileOpen_Click(System::Object^  sender, System::EventArgs^  e) {
-				 MessageBox::Show(L"打开文件");
+				 OpenFileDialog^ file = gcnew OpenFileDialog();
+
+				 // 设定过滤符
+				 file->Filter = L"文本文件(.txt;*.c;*.cpp;*.py)|*.txt;*.c;*.cpp;*.py|C#文件|*.cs|所有文件(*.*)|*.*";
+
+				 String^ fileName = file->ShowDialog() != 
+					System::Windows::Forms::DialogResult::Cancel ? file->FileName->ToString() : String::Empty;
+
+				 // MessageBox::Show(L"FileName: " + (fileName == String::Empty ? "空" : fileName));
+				 if (fileName != String::Empty) {
+					textArea^ textAreaContainer = gcnew textArea();
+
+					textAreaContainer->MdiParent = this; // 设置子窗体的父窗体
+					textAreaContainer->Show();
+				 }
 			 }
 	private: System::Void fileSave_Click(System::Object^  sender, System::EventArgs^  e) {
 				 MessageBox::Show(L"保存文件");
 			 }
 private: System::Void fileSaveAs_Click(System::Object^  sender, System::EventArgs^  e) {
 			 MessageBox::Show(L"另存为");
+			 SaveFileDialog^ file = gcnew SaveFileDialog();
+			 
+			 if (file->ShowDialog() != 
+				 System::Windows::Forms::DialogResult::Cancel) {
+				MessageBox::Show(L"@TODO Save Now....");
+			 }
 		 }
 private: System::Void 编辑ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 		 }
 private: System::Void 查看帮助ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		 }
+private: System::Void statusLine_Click(System::Object^  sender, System::EventArgs^  e) {
+			 // Change Status
+			 statusLine->Checked = ! statusLine->Checked;
+
+			 if (! statusLine->Checked) {
+				statusPanel->Visible = false;
+				return ;
+			 } 
+			 statusPanel->Visible = true;
+		 }
+private: System::Void openFolderOption_Click(System::Object^  sender, System::EventArgs^  e) {
+			 FolderBrowserDialog^ folderHandler = gcnew FolderBrowserDialog();
+			 if (folderHandler->ShowDialog() == 
+				 System::Windows::Forms::DialogResult::Cancel)
+				 return ;
+
+			 array<String^>^ fileList = System::IO::Directory::GetFiles(folderHandler->SelectedPath,
+				 L"*.py");
+
+			 MessageBox::Show(L"Path: " + folderHandler->SelectedPath + L"\nFileList: \n\t" + fileList->ToString());
 		 }
 };
 }

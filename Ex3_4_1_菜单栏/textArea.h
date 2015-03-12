@@ -79,5 +79,14 @@ namespace Ex3_4_1_²Ëµ¥À¸ {
 #pragma endregion
 	private: System::Void textArea_Load(System::Object^  sender, System::EventArgs^  e) {
 			 }
+	public:
+		void setText(String^ content) {
+			this->textAreaPanel->Text = content;
+		}
+	public:
+		void appendText(String^ content) {
+			this->textAreaPanel->Text += content;
+		}
+
 	};
 }

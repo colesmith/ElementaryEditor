@@ -10,6 +10,8 @@ namespace Ex3_4_1_菜单栏 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
+	using namespace System::Text;
 
 	/// <summary>
 	/// Form1 摘要
@@ -79,6 +81,9 @@ namespace Ex3_4_1_菜单栏 {
 	private: System::Windows::Forms::ToolStripMenuItem^  窗体ToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  openFolderOption;
 
+	// Cole Smith
+	private FileInfo^ fileInfoHandler;
+
 
 	private:
 		/// <summary>
@@ -93,6 +98,9 @@ namespace Ex3_4_1_菜单栏 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			// Cole Smith
+			this->fileInfoHandler = nullptr;
+
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->menuPanel = (gcnew System::Windows::Forms::MenuStrip());
 			this->file = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -425,11 +433,39 @@ namespace Ex3_4_1_菜单栏 {
 				 String^ fileName = file->ShowDialog() != 
 					System::Windows::Forms::DialogResult::Cancel ? file->FileName->ToString() : String::Empty;
 
+				 // 检测文件是否存在
+				 if (! File::Exists(fileName)) {
+					 MessageBox::Show(L"Sorry, 文件: " + fileName + L" 并不存在");
+					 return ;
+				 }
+
 				 // MessageBox::Show(L"FileName: " + (fileName == String::Empty ? "空" : fileName));
 				 if (fileName != String::Empty) {
-					textArea^ textAreaContainer = gcnew textArea();
+					// 文件流
+					// FileStream^ fileStream = gcnew FileStream(fileName,
+					//	 FileMode::Open, FileAccess::ReadWrite, FileShare::Read);
+					FileInfo^ fileInfo = gcnew FileInfo(fileName);
 
+					// set File Info Handler
+					this->fileInfoHandler = fileInfo;
+
+					FileStream^ stream = fileInfo->Open(FileMode::OpenOrCreate, FileAccess::Read);
+					StreamReader^ reader = gcnew StreamReader(stream, Encoding::UTF8);
+
+					textArea^ textAreaContainer = gcnew textArea();
 					textAreaContainer->MdiParent = this; // 设置子窗体的父窗体
+					
+
+					String^ readText;
+					while ((readText = reader->ReadLine()) != nullptr)
+					{
+						// textAreaContainer->textAreaPanel->Set += readText + "\r\n";
+						textAreaContainer->appendText(readText + "\r\n");
+					}
+
+					reader->Close();
+					stream->Close();
+
 					textAreaContainer->Show();
 				 }
 			 }

@@ -82,7 +82,9 @@ namespace Ex3_4_1_菜单栏 {
 	private: System::Windows::Forms::ToolStripMenuItem^  openFolderOption;
 
 	// Cole Smith
-	private FileInfo^ fileInfoHandler;
+	private: System::String^ fileName;
+	// private: System::IO::FileInfo^ fileInfoHandler;
+	private: textArea^ textAreaContainer;
 
 
 	private:
@@ -99,7 +101,9 @@ namespace Ex3_4_1_菜单栏 {
 		void InitializeComponent(void)
 		{
 			// Cole Smith
-			this->fileInfoHandler = nullptr;
+			this->fileName = nullptr;
+			// this->fileInfoHandler = nullptr;
+			this->textAreaContainer = nullptr;
 
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->menuPanel = (gcnew System::Windows::Forms::MenuStrip());
@@ -447,12 +451,13 @@ namespace Ex3_4_1_菜单栏 {
 					FileInfo^ fileInfo = gcnew FileInfo(fileName);
 
 					// set File Info Handler
-					this->fileInfoHandler = fileInfo;
+					this->fileName = fileName;
+					// this->fileInfoHandler = fileInfo;
 
 					FileStream^ stream = fileInfo->Open(FileMode::OpenOrCreate, FileAccess::Read);
 					StreamReader^ reader = gcnew StreamReader(stream, Encoding::UTF8);
 
-					textArea^ textAreaContainer = gcnew textArea();
+					textAreaContainer = gcnew textArea();
 					textAreaContainer->MdiParent = this; // 设置子窗体的父窗体
 					
 
@@ -470,17 +475,64 @@ namespace Ex3_4_1_菜单栏 {
 				 }
 			 }
 	private: System::Void fileSave_Click(System::Object^  sender, System::EventArgs^  e) {
-				 MessageBox::Show(L"保存文件");
+				 // 新文件或文件不存在时，直接用fileSaveAs_Click
+				 if (this->fileName==nullptr || ! File::Exists(this->fileName)) {
+					this->fileSaveAs_Click(this, e);
+					return ;
+				 }
+
+				 try {
+					 // 文件存在时,直接保存
+					 FileInfo^ fileInfoHandler = gcnew FileInfo(this->fileName);
+
+					 FileStream^ stream =
+						 fileInfoHandler->Open(FileMode::Truncate, FileAccess::Write);
+					 StreamWriter^ writer = 
+						 gcnew StreamWriter(stream, Encoding::UTF8);
+
+					 for each (String^ lineText in this->textAreaContainer->getLines())
+					 	 writer->WriteLine(lineText);
+					 //	 MessageBox::Show(lineText);
+					 writer->Flush();
+					 // writer->Write(this->textAreaContainer->getText());
+
+					 writer->Close();
+					 stream->Close();
+					 
+					 this->errorLog->Text = L"保存成功 at " + DateTime::Now.ToLongTimeString();
+				 }
+				 catch (IOException^ e) {
+					 MessageBox::Show(e->ToString());
+				 }
 			 }
+
 private: System::Void fileSaveAs_Click(System::Object^  sender, System::EventArgs^  e) {
 			 MessageBox::Show(L"另存为");
 			 SaveFileDialog^ file = gcnew SaveFileDialog();
 			 
 			 if (file->ShowDialog() != 
-				 System::Windows::Forms::DialogResult::Cancel) {
-				MessageBox::Show(L"@TODO Save Now....");
+				 System::Windows::Forms::DialogResult::OK)
+				return ;
+
+			 try {
+				 // 保存文件
+				 FileInfo^ fileInfo = gcnew FileInfo(file->FileName);
+				 FileStream^ stream = fileInfo->Open(FileMode::Create, FileAccess::Write);
+				 StreamWriter^ writer = gcnew StreamWriter(stream, Encoding::UTF8);
+
+				 for each (String^ lineText in this->textAreaContainer->getLines())
+					writer->WriteLine(lineText);
+				 writer->Flush();
+
+				 writer->Close();
+				 stream->Close();
+				 this->errorLog->Text = L"另存为: " + file->FileName;
+			 }
+			 catch (IOException^ e) {
+				 MessageBox::Show(e->ToString());
 			 }
 		 }
+
 private: System::Void 编辑ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 		 }
 private: System::Void 查看帮助ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {

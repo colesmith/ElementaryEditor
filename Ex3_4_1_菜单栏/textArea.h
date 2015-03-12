@@ -87,6 +87,15 @@ namespace Ex3_4_1_²Ëµ¥À¸ {
 		void appendText(String^ content) {
 			this->textAreaPanel->Text += content;
 		}
-
+	public:
+		System::String^ getText() {
+			this->textAreaPanel->Modified = false;
+			return this->textAreaPanel->Text;
+		}
+	public:
+		array<String^>^ getLines() {
+			// this->textAreaPanel->Modified = false;
+			return this->textAreaPanel->Lines;
+		}
 	};
 }
